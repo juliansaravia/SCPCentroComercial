@@ -1,4 +1,4 @@
-// map.js - Análisis del Centro Comercial Santa Catarina Pinula
+// map.js - Análisis del Área de Interés
 
 // Variables globales
 let map;
@@ -6,16 +6,17 @@ let markerClusters = {};
 let heatMap;
 let drawnItems;
 let otherMalls;
+let highlightedArea; // Variable para el área resaltada
 
-// Coordenadas del centro comercial principal
-const shoppingCenterCoords = [14.5604720, -90.4622219];
+// Coordenadas específicas para el área de interés
+const areaOfInterestCoords = [14.5626526, -90.4626235];
 
-// Inicializar el mapa, pero esta función ahora será llamada después de cargar los datos CSV
+// Inicializar el mapa
 function initializeMap() {
     console.log("Inicializando mapa con datos cargados");
     
-    // Crear el mapa centrado en el centro comercial principal
-    map = L.map('map').setView(shoppingCenterCoords, 14);
+    // Crear el mapa centrado en el área de interés
+    map = L.map('map').setView(areaOfInterestCoords, 14);
 
     // Añadir capa base (OpenStreetMap)
     const baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -42,28 +43,6 @@ function initializeMap() {
         "Mapa Oscuro": darkMap
     };
 
-    // Añadir herramientas de dibujo
-    drawnItems = new L.FeatureGroup();
-    map.addLayer(drawnItems);
-
-    const drawControl = new L.Control.Draw({
-        edit: {
-            featureGroup: drawnItems
-        },
-        draw: {
-            polyline: false,
-            marker: false,
-            circlemarker: false
-        }
-    });
-    map.addControl(drawControl);
-
-    // Manejar eventos de dibujo
-    map.on(L.Draw.Event.CREATED, function (e) {
-        const layer = e.layer;
-        drawnItems.addLayer(layer);
-    });
-
     // Crear clusters de marcadores para diferentes períodos de tiempo
     markerClusters = {
         overall: L.markerClusterGroup(),
@@ -78,8 +57,8 @@ function initializeMap() {
     // Añadir marcadores basados en los datos cargados
     addResidentialMarkers();
     
-    // Añadir marcador del centro comercial principal
-    addMainShoppingCenterMarker();
+    // Añadir polígono para resaltar el área de interés (en lugar del centro comercial)
+    addHighlightedArea();
     
     // Añadir otros centros comerciales
     addOtherMalls();
@@ -188,6 +167,73 @@ async function loadResidentialData() {
     }
 }
 
+// Cargar datos predefinidos (fallback)
+function loadHardcodedData() {
+    // Utilizamos los datos CSV ya incorporados en el archivo HTML
+    residentialData = [];
+    
+    // Utilizamos los datos existentes en embeddedCSVData
+    if (window.embeddedCSVData) {
+        const lines = window.embeddedCSVData.split('\n');
+        
+        for (let i = 1; i < lines.length; i++) {
+            if (!lines[i].trim()) continue; // Saltar líneas vacías
+            
+            const values = lines[i].split(',');
+            if (values.length < 11) continue; // Asegurarse de que hay suficientes valores
+            
+            try {
+                const location = {
+                    name: values[0],
+                    lat: parseFloat(values[1]),
+                    lng: parseFloat(values[2]),
+                    distance: parseFloat(values[3]),
+                    times: {
+                        overall: parseFloat(values[4]),
+                        morning: parseFloat(values[5]),
+                        midday: parseFloat(values[6]),
+                        evening: parseFloat(values[7])
+                    },
+                    trafficFactor: parseFloat(values[8]),
+                    accessibilityScore: parseFloat(values[9]),
+                    publicTransport: parseInt(values[10])
+                };
+                
+                // Verificar que las coordenadas sean válidas
+                if (!isNaN(location.lat) && !isNaN(location.lng)) {
+                    residentialData.push(location);
+                }
+            } catch (e) {
+                console.error(`Error al procesar línea ${i+1}: ${e.message}`);
+            }
+        }
+    }
+    
+    // Si no se pudieron cargar datos, usar datos fallback predefinidos
+    if (residentialData.length === 0) {
+        residentialData = [
+            {
+                name: 'Apartamentos Monet', 
+                lat: 14.565411, 
+                lng: -90.442502, 
+                times: {
+                    overall: 6.97, 
+                    morning: 8.42, 
+                    midday: 6.50, 
+                    evening: 6.00
+                },
+                distance: 3.30,
+                trafficFactor: 1.21,
+                accessibilityScore: 3.5,
+                publicTransport: 2
+            },
+            // Más datos predefinidos aquí si es necesario
+        ];
+    }
+    
+    console.log(`Datos predefinidos cargados: ${residentialData.length} ubicaciones residenciales`);
+}
+
 // ==========================================
 // Funciones para crear elementos del mapa
 // ==========================================
@@ -252,170 +298,42 @@ function addResidentialMarkers() {
     console.log("Marcadores residenciales añadidos con éxito");
 }
 
-// Añadir marcador del centro comercial principal
-function addMainShoppingCenterMarker() {
-    console.log("Añadiendo marcador del centro comercial principal...");
+// Añadir polígono para resaltar el área de interés
+function addHighlightedArea() {
+    console.log("Añadiendo área de interés resaltada...");
     
-    const mainShoppingIcon = L.divIcon({
-        className: '',
-        html: `<div style="background-color: red; color: white; 
-              border-radius: 50%; width: 30px; height: 30px; 
-              display: flex; justify-content: center; align-items: center;
-              font-weight: bold; border: 1px solid white;">
-              <i class="fas fa-shopping-cart"></i>
-              </div>`,
-        iconSize: [30, 30],
-        iconAnchor: [15, 15]
-    });
-
-    L.marker(shoppingCenterCoords, {
-        icon: mainShoppingIcon
-    }).bindPopup('<b>Centro Comercial Santa Catarina Pinula</b>').addTo(map);
+    // Crear un círculo con radio de aproximadamente 500 metros como polígono
+    // Usamos un círculo para no revelar la ubicación exacta, solo el área general
+    const radius = 500; // metros
     
-    console.log("Marcador del centro comercial principal añadido con éxito");
-}
-
-// Cargar datos predefinidos (fallback)
-function loadHardcodedData() {
-    // Utilizamos los datos CSV ya incorporados en el archivo HTML
-    residentialData = [];
+    // Crear un array de puntos para formar un polígono circular
+    const points = 30; // número de puntos para formar el polígono
+    const center = areaOfInterestCoords;
+    const polygonPoints = [];
     
-    // Utilizamos los datos existentes en embeddedCSVData
-    if (window.embeddedCSVData) {
-        const lines = window.embeddedCSVData.split('\n');
-        
-        for (let i = 1; i < lines.length; i++) {
-            if (!lines[i].trim()) continue; // Saltar líneas vacías
-            
-            const values = lines[i].split(',');
-            if (values.length < 11) continue; // Asegurarse de que hay suficientes valores
-            
-            try {
-                const location = {
-                    name: values[0],
-                    lat: parseFloat(values[1]),
-                    lng: parseFloat(values[2]),
-                    distance: parseFloat(values[3]),
-                    times: {
-                        overall: parseFloat(values[4]),
-                        morning: parseFloat(values[5]),
-                        midday: parseFloat(values[6]),
-                        evening: parseFloat(values[7])
-                    },
-                    trafficFactor: parseFloat(values[8]),
-                    accessibilityScore: parseFloat(values[9]),
-                    publicTransport: parseInt(values[10])
-                };
-                
-                // Verificar que las coordenadas sean válidas
-                if (!isNaN(location.lat) && !isNaN(location.lng)) {
-                    residentialData.push(location);
-                }
-            } catch (e) {
-                console.error(`Error al procesar línea ${i+1}: ${e.message}`);
-            }
-        }
+    for (let i = 0; i < points; i++) {
+        const angle = (i / points) * (Math.PI * 2);
+        const lat = center[0] + (radius / 111300) * Math.cos(angle);
+        const lng = center[1] + (radius / (111300 * Math.cos(center[0] * (Math.PI / 180)))) * Math.sin(angle);
+        polygonPoints.push([lat, lng]);
     }
     
-    // Si no se pudieron cargar datos, usar datos fallback predefinidos
-    if (residentialData.length === 0) {
-        residentialData = [
-            {
-                name: 'Apartamentos Monet', 
-                lat: 14.565411, 
-                lng: -90.442502, 
-                times: {
-                    overall: 6.97, 
-                    morning: 8.42, 
-                    midday: 6.50, 
-                    evening: 6.00
-                },
-                distance: 3.30,
-                trafficFactor: 1.21,
-                accessibilityScore: 3.5,
-                publicTransport: 2
-            },
-            {
-                name: 'Apartamentos Victoria', 
-                lat: 14.568815, 
-                lng: -90.449465, 
-                times: {
-                    overall: 4.74, 
-                    morning: 5.92, 
-                    midday: 4.31, 
-                    evening: 4.00
-                },
-                distance: 2.30,
-                trafficFactor: 1.25,
-                accessibilityScore: 4.1,
-                publicTransport: 3
-            },
-            {
-                name: 'Bosques de las Luces', 
-                lat: 14.565138, 
-                lng: -90.461926, 
-                times: {
-                    overall: 3.51, 
-                    morning: 3.50, 
-                    midday: 3.38, 
-                    evening: 3.67
-                },
-                distance: 0.50,
-                trafficFactor: 1.00,
-                accessibilityScore: 4.8,
-                publicTransport: 4
-            },
-            {
-                name: 'Condominio Basseterre', 
-                lat: 14.570475, 
-                lng: -90.460591, 
-                times: {
-                    overall: 1.69, 
-                    morning: 2.08, 
-                    midday: 1.50, 
-                    evening: 1.50
-                },
-                distance: 1.20,
-                trafficFactor: 1.23,
-                accessibilityScore: 4.9,
-                publicTransport: 3
-            },
-            {
-                name: 'Condominio Las Luces', 
-                lat: 14.56557, 
-                lng: -90.467292, 
-                times: {
-                    overall: 4.77, 
-                    morning: 4.81, 
-                    midday: 4.60, 
-                    evening: 4.89
-                },
-                distance: 0.71,
-                trafficFactor: 1.01,
-                accessibilityScore: 4.1,
-                publicTransport: 2
-            },
-            {
-                name: 'Residencial Puerta Parada', 
-                lat: 14.560377, 
-                lng: -90.46189, 
-                times: {
-                    overall: 1.86, 
-                    morning: 2.08, 
-                    midday: 1.75, 
-                    evening: 1.75
-                },
-                distance: 0.37,
-                trafficFactor: 1.12,
-                accessibilityScore: 4.9,
-                publicTransport: 4
-            }
-        ];
-    }
+    // Crear el polígono con relleno rojo semitransparente y borde blanco
+    highlightedArea = L.polygon(polygonPoints, {
+        color: 'white',           // Color del borde
+        weight: 2,               // Grosor del borde
+        fillColor: 'red',        // Color de relleno
+        fillOpacity: 0.5,        // Opacidad del relleno (50%)
+        smoothFactor: 1          // Suavizado de líneas
+    }).addTo(map);
     
-    console.log(`Datos predefinidos cargados: ${residentialData.length} ubicaciones residenciales`);
+    // Añadir popup simple al área
+    highlightedArea.bindPopup('Área de interés');
+    
+    console.log("Área de interés añadida con éxito");
 }
 
+// Datos de otros centros comerciales
 const mallsData = [
     {
         name: 'Pacific Plaza',
@@ -574,7 +492,8 @@ function setupLayerControls() {
         "Medio Día (11 AM-2 PM)": markerClusters.midday,
         "Hora Pico Vespertina (5-7 PM)": markerClusters.evening,
         "Otros Centros Comerciales": otherMalls,
-        "Mapa de Calor": heatMap
+        "Mapa de Calor": heatMap,
+        "Área de Interés": highlightedArea
     };
 
     // Añadir control de capas al mapa
@@ -634,7 +553,7 @@ function updateTimeViewHandler() {
             'evening': 'Hora Pico Tarde (5-7 PM)'
         }[selectedTime];
         
-        titleElement.textContent = `Análisis del Centro Comercial Santa Catarina Pinula - ${timePeriodText}`;
+        titleElement.textContent = `Análisis del Área de Interés - ${timePeriodText}`;
     }
     
     console.log(`Vista cambiada a ${selectedTime}`);
