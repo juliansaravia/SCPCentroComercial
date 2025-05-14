@@ -205,6 +205,45 @@
             border: 1px solid white;
             font-size: 10px;
         }
+        
+        /* Nuevos estilos para los datos adicionales */
+        .accessibility-rating {
+            display: inline-block;
+            margin-right: 5px;
+            color: #3388cc;
+        }
+        
+        .transport-rating {
+            display: inline-block;
+            margin-right: 5px;
+            color: #3388cc;
+        }
+        
+        .traffic-factor {
+            display: inline-block;
+            margin-right: 5px;
+            color: orange;
+        }
+        
+        /* Separador horizontal en la leyenda */
+        .legend-container hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 5px 0;
+        }
+        
+        /* Custom popup styles */
+        .leaflet-popup-content {
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        
+        .leaflet-popup-content b {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -214,7 +253,7 @@
     <!-- Title -->
     <div class="title-container">
         <h3>Análisis del Centro Comercial Santa Catarina Pinula</h3>
-        <div class="subtitle">Tiempos de viaje desde áreas residenciales al centro comercial principal</div>
+        <div class="subtitle">Tiempos de viaje, accesibilidad y transporte desde áreas residenciales</div>
     </div>
     
     <!-- Legend -->
@@ -234,6 +273,17 @@
         </div>
         <div class="legend-item">
             <span class="legend-color purple" style="width: 12px; height: 12px;"></span> Otros Centros Comerciales
+        </div>
+        <hr style="margin: 5px 0;">
+        <h4>Datos Adicionales</h4>
+        <div class="legend-item">
+            <i class="fas fa-traffic-light" style="color: orange; margin-right: 5px;"></i> Factor de Tráfico
+        </div>
+        <div class="legend-item">
+            <i class="fas fa-universal-access" style="color: blue; margin-right: 5px;"></i> Puntaje de Accesibilidad (1-5)
+        </div>
+        <div class="legend-item">
+            <i class="fas fa-bus" style="color: #3388cc; margin-right: 5px;"></i> Transporte Público (1-4)
         </div>
     </div>
     
@@ -269,7 +319,7 @@
             <li>Los <b>pequeños puntos morados</b> son otros centros comerciales en el área.</li>
             <li>Use el selector de período para ver cómo cambian los tiempos durante el día.</li>
         </ul>
-        <p>Haga clic en cualquier punto para ver más detalles.</p>
+        <p>Haga clic en cualquier punto para ver más detalles como accesibilidad y transporte público.</p>
     </div>
     
     <!-- Leaflet JS -->
@@ -279,26 +329,198 @@
     <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
     
+    <!-- Debug Info Container -->
+    <div id="debug-info" style="position: fixed; top: 50%; right: 10px; background-color: rgba(255,255,255,0.8); padding: 10px; border-radius: 5px; z-index: 1000; max-width: 300px; max-height: 400px; overflow-y: auto; display: none;">
+        <h4>Debug Info</h4>
+        <div id="debug-content"></div>
+    </div>
+    
+    <!-- Leaflet JS - MAKE SURE LOADED BEFORE OUR SCRIPTS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Leaflet Plugins JS -->
+    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    
+    <!-- Embedded CSV data as JavaScript -->
+    <script>
+        // This is the CSV data embedded directly in HTML
+        const embeddedCSVData = `name,lat,lng,distance,overall_time,morning_time,midday_time,evening_time,traffic_factor,accessibility_score,public_transport
+Apartamentos Monet,14.565411,-90.442502,3.30,6.97,8.42,6.50,6.00,1.21,3.5,2
+Apartamentos Victoria,14.568815,-90.449465,2.30,4.74,5.92,4.31,4.00,1.25,4.1,3
+Bosques de las Luces,14.565138,-90.461926,0.50,3.51,3.50,3.38,3.67,1.00,4.8,4
+Condominio Basseterre,14.570475,-90.460591,1.20,1.69,2.08,1.50,1.50,1.23,4.9,3
+Condominio Las Luces,14.56557,-90.467292,0.71,4.77,4.81,4.60,4.89,1.01,4.1,2
+Laguna del Bosque,14.565939,-90.436841,3.80,8.08,9.58,7.50,7.17,1.19,3.2,1
+Lomas de Puerta Parada,14.564795,-90.463375,0.30,3.54,3.58,3.38,3.67,1.01,4.7,4
+Navani,14.568753,-90.461195,0.76,2.86,3.08,2.75,2.75,1.08,4.6,3
+Paseo Residencias,14.568667,-90.458719,0.92,2.78,3.33,2.50,2.50,1.20,4.7,3
+Portal de la Fuente,14.569073,-90.461426,1.00,3.19,3.50,3.06,3.00,1.10,4.5,3
+Residencial Monticello,14.567752,-90.45663,1.70,2.95,3.92,2.44,2.50,1.33,4.6,3
+Residencial Puerta Parada,14.560377,-90.46189,0.37,1.86,2.08,1.75,1.75,1.12,4.9,4
+Torre Metropolitano,14.567692,-90.451683,2.40,5.18,6.42,4.63,4.50,1.24,4.0,2
+Villa Lolita,14.569411,-90.447349,2.50,5.14,6.33,4.75,4.33,1.23,4.1,2
+Villas de Entreluces,14.567379,-90.455048,1.70,4.45,5.17,3.94,4.25,1.16,4.2,3
+Colegio Montessori,14.5689,-90.4608,1.00,3.90,4.54,3.56,3.58,1.16,4.5,4
+Colegio Metropolitano,14.567197,-90.451689,2.20,5.94,7.33,5.25,5.25,1.23,3.9,3
+Dalias Concepción,14.5605372,-90.4548165,2.90,7.66,8.89,6.25,7.83,1.16,3.5,2
+Buranas,14.558837,-90.4486255,2.60,8.03,8.89,6.38,8.83,1.11,3.4,1
+Westfalia,14.5566677,-90.451649,1.90,6.59,7.89,5.06,6.83,1.20,3.7,2
+Residenciales Los Altos,14.5668769,-90.4703276,4.80,6.06,5.75,6.75,5.67,0.95,3.8,2
+Colegio Maya,14.569061,-90.4717094,5.20,6.18,4.44,7.67,6.42,0.72,3.7,2
+Santa Rosalía,14.5721473,-90.4702142,2.20,5.91,4.22,7.50,6.00,0.71,3.9,3
+El Socorro,14.5709003,-90.4719899,2.40,5.01,3.89,6.07,5.08,0.78,4.1,3
+Hill Top,14.571311,-90.4734143,2.20,5.82,4.44,6.93,6.08,0.76,3.9,2
+Alto Valle,14.5697766,-90.4760407,2.80,7.05,5.44,8.29,7.42,0.77,3.6,1
+Vistas de Alto Valle,14.5692856,-90.476022,2.90,7.61,5.67,9.07,8.08,0.74,3.4,1
+Loma Real,14.5657568,-90.4690817,1.30,4.99,7.08,3.88,4.00,1.42,4.0,3
+Villas del Campo,14.5667192,-90.4713597,1.60,5.14,4.50,5.50,5.42,0.88,4.0,2
+Villas de San Francisco Javier,14.5695535,-90.4741135,2.70,6.86,5.50,7.75,7.33,0.80,3.7,2
+El Casco,14.5690031,-90.4735373,1.70,5.14,4.50,5.50,5.42,0.88,4.1,3
+Forest Hill,14.564695,-90.4696137,1.40,3.00,3.00,3.00,3.00,1.00,4.6,3
+Residencial Valle Bello,14.564712,-90.4703695,1.50,3.00,3.00,3.00,3.00,1.00,4.6,3
+Residenciales Royal Hill,14.5637283,-90.4704284,1.60,3.00,3.00,3.00,3.00,1.00,4.5,3`;
+
+        // Create a Blob from the CSV string
+        const blob = new Blob([embeddedCSVData], { type: 'text/csv' });
+        
+        // Create a URL for the Blob
+        window.csvDataUrl = URL.createObjectURL(blob);
+        
+        console.log("CSV data embedded and URL created:", window.csvDataUrl);
+        
+        // Override console.log to show debug info in UI
+        const originalConsoleLog = console.log;
+        const originalConsoleError = console.error;
+        
+        // Create a function to add debug info to the UI
+        function addDebugInfo(message, isError = false) {
+            const debugContentElement = document.getElementById('debug-content');
+            if (debugContentElement) {
+                const messageElement = document.createElement('div');
+                messageElement.style.marginBottom = '5px';
+                messageElement.style.borderBottom = '1px solid #ddd';
+                messageElement.style.paddingBottom = '5px';
+                
+                if (isError) {
+                    messageElement.style.color = 'red';
+                    messageElement.style.fontWeight = 'bold';
+                }
+                
+                // Convert objects to string
+                if (typeof message === 'object') {
+                    try {
+                        message = JSON.stringify(message);
+                    } catch (e) {
+                        message = 'Object cannot be displayed';
+                    }
+                }
+                
+                messageElement.textContent = message;
+                debugContentElement.appendChild(messageElement);
+                
+                // Auto-scroll to bottom
+                debugContentElement.scrollTop = debugContentElement.scrollHeight;
+            }
+        }
+        
+        // Override console.log and console.error
+        console.log = function() {
+            const args = Array.from(arguments);
+            originalConsoleLog.apply(console, args);
+            addDebugInfo(args.join(' '));
+        };
+        
+        console.error = function() {
+            const args = Array.from(arguments);
+            originalConsoleError.apply(console, args);
+            addDebugInfo(args.join(' '), true);
+        };
+        
+        // Add key command to show/hide debug info
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'D' && e.ctrlKey) {
+                const debugInfo = document.getElementById('debug-info');
+                if (debugInfo) {
+                    debugInfo.style.display = debugInfo.style.display === 'none' ? 'block' : 'none';
+                }
+            }
+        });
+        
+        // Show debug info by default in debug mode
+        const urlParams = new URLSearchParams(window.location.search);
+        const debug = urlParams.get('debug');
+        if (debug === 'true') {
+            const debugInfo = document.getElementById('debug-info');
+            if (debugInfo) {
+                debugInfo.style.display = 'block';
+            }
+        }
+    </script>
+    
+    <!-- Custom JS - LOAD AFTER EMBEDDED DATA -->
+    <script src="map.js"></script> Metropolitano,14.567197,-90.451689,2.20,5.94,7.33,5.25,5.25,1.23,3.9,3
+Dalias Concepción,14.5605372,-90.4548165,2.90,7.66,8.89,6.25,7.83,1.16,3.5,2
+Buranas,14.558837,-90.4486255,2.60,8.03,8.89,6.38,8.83,1.11,3.4,1
+Westfalia,14.5566677,-90.451649,1.90,6.59,7.89,5.06,6.83,1.20,3.7,2
+Residenciales Los Altos,14.5668769,-90.4703276,4.80,6.06,5.75,6.75,5.67,0.95,3.8,2
+Colegio Maya,14.569061,-90.4717094,5.20,6.18,4.44,7.67,6.42,0.72,3.7,2
+Santa Rosalía,14.5721473,-90.4702142,2.20,5.91,4.22,7.50,6.00,0.71,3.9,3
+El Socorro,14.5709003,-90.4719899,2.40,5.01,3.89,6.07,5.08,0.78,4.1,3
+Hill Top,14.571311,-90.4734143,2.20,5.82,4.44,6.93,6.08,0.76,3.9,2
+Alto Valle,14.5697766,-90.4760407,2.80,7.05,5.44,8.29,7.42,0.77,3.6,1
+Vistas de Alto Valle,14.5692856,-90.476022,2.90,7.61,5.67,9.07,8.08,0.74,3.4,1
+Loma Real,14.5657568,-90.4690817,1.30,4.99,7.08,3.88,4.00,1.42,4.0,3
+Villas del Campo,14.5667192,-90.4713597,1.60,5.14,4.50,5.50,5.42,0.88,4.0,2
+Villas de San Francisco Javier,14.5695535,-90.4741135,2.70,6.86,5.50,7.75,7.33,0.80,3.7,2
+El Casco,14.5690031,-90.4735373,1.70,5.14,4.50,5.50,5.42,0.88,4.1,3
+Forest Hill,14.564695,-90.4696137,1.40,3.00,3.00,3.00,3.00,1.00,4.6,3
+Residencial Valle Bello,14.564712,-90.4703695,1.50,3.00,3.00,3.00,3.00,1.00,4.6,3
+Residenciales Royal Hill,14.5637283,-90.4704284,1.60,3.00,3.00,3.00,3.00,1.00,4.5,3`;
+
+        // Create a Blob from the CSV string
+        const blob = new Blob([embeddedCSVData], { type: 'text/csv' });
+        
+        // Create a URL for the Blob
+        window.csvDataUrl = URL.createObjectURL(blob);
+        
+        console.log("CSV data embedded and URL created:", window.csvDataUrl);
+    </script>
+    
     <!-- Custom JS -->
     <script src="map.js"></script>
     
     <!-- Ensure the update button works -->
     <script>
+        // This function handles updating the time view when the button is clicked
         function updateTimeViewHandler() {
+            console.log("Botón de actualización pulsado");
+            
             // Obtener período de tiempo seleccionado
             const selectedTime = document.querySelector('input[name="timeOfDay"]:checked').value;
+            console.log("Período seleccionado:", selectedTime);
             
             // Check if markerClusters is defined
             if (typeof markerClusters !== 'undefined') {
+                console.log("markerClusters está definido. Capas disponibles:", Object.keys(markerClusters).join(", "));
+                
                 // Eliminar todos los clusters de marcadores del mapa
                 Object.keys(markerClusters).forEach(period => {
                     if (map.hasLayer(markerClusters[period])) {
+                        console.log(`Removiendo capa ${period} del mapa`);
                         map.removeLayer(markerClusters[period]);
+                    } else {
+                        console.log(`La capa ${period} no está en el mapa`);
                     }
                 });
                 
+                // Comprobar número de marcadores en el cluster seleccionado
+                console.log(`Número de marcadores en ${selectedTime}:`, 
+                    markerClusters[selectedTime].getLayers().length);
+                
                 // Añadir el cluster de marcadores seleccionado al mapa
                 map.addLayer(markerClusters[selectedTime]);
+                console.log(`Capa ${selectedTime} añadida al mapa`);
                 
                 // Actualizar datos del mapa de calor para el período de tiempo seleccionado
                 if (typeof heatMap !== 'undefined' && map.hasLayer(heatMap)) {
@@ -317,6 +539,7 @@
                     
                     heatMap = newHeatMap;
                     map.addLayer(heatMap);
+                    console.log("Mapa de calor actualizado");
                 }
                 
                 // Actualizar título para mostrar el período de tiempo seleccionado
@@ -330,21 +553,48 @@
                     }[selectedTime];
                     
                     titleElement.textContent = `Análisis del Centro Comercial Santa Catarina Pinula - ${timePeriodText}`;
+                    console.log("Título actualizado");
                 }
                 
                 console.log(`Cambió a vista ${selectedTime}`);
             } else {
                 console.error("markerClusters not defined!");
+                alert("Error: La capa de marcadores no está definida. Intente recargar la página.");
             }
         }
         
-        // Also add the event listener when document is ready
+        // Añadir un botón flotante de debug para mostrar/ocultar la información de depuración
         document.addEventListener('DOMContentLoaded', function() {
+            // Crear un botón flotante para mostrar/ocultar el panel de depuración
+            const debugButton = document.createElement('button');
+            debugButton.innerText = 'Debug';
+            debugButton.style.position = 'fixed';
+            debugButton.style.top = '10px';
+            debugButton.style.right = '10px';
+            debugButton.style.zIndex = '2000';
+            debugButton.style.padding = '5px 10px';
+            debugButton.style.backgroundColor = '#007bff';
+            debugButton.style.color = 'white';
+            debugButton.style.border = 'none';
+            debugButton.style.borderRadius = '3px';
+            debugButton.style.cursor = 'pointer';
+            
+            debugButton.addEventListener('click', function() {
+                const debugInfo = document.getElementById('debug-info');
+                if (debugInfo) {
+                    debugInfo.style.display = debugInfo.style.display === 'none' ? 'block' : 'none';
+                }
+            });
+            
+            document.body.appendChild(debugButton);
+            
+            // Verificar si se ha añadido un listener al botón de actualización
             const updateButton = document.getElementById('updateTimeView');
             if (updateButton) {
                 updateButton.addEventListener('click', updateTimeViewHandler);
+                console.log("Evento asignado al botón de actualización");
             } else {
-                console.error("Update button not found!");
+                console.error("Botón de actualización no encontrado!");
             }
         });
     </script>
