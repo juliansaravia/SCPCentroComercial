@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análisis del Centro Comercial Santa Catarina Pinula</title>
+    <title>Análisis del Área de Interés</title>
     
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -192,20 +192,7 @@
             background-color: red;
         }
         
-        .mall-marker {
-            background-color: purple;
-            color: white;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            border: 1px solid white;
-            font-size: 10px;
-        }
-        
+    
         /* Nuevos estilos para los datos adicionales */
         .accessibility-rating {
             display: inline-block;
@@ -252,7 +239,7 @@
     
     <!-- Title -->
     <div class="title-container">
-        <h3>Análisis del Centro Comercial Santa Catarina Pinula</h3>
+        <h3>Análisis del Área de Interés</h3>
         <div class="subtitle">Tiempos de viaje, accesibilidad y transporte desde áreas residenciales</div>
     </div>
     
@@ -269,13 +256,12 @@
             <span class="legend-color red"></span> 10+ minutos
         </div>
         <div class="legend-item">
-            <i class="fas fa-shopping-cart" style="color: red; margin-right: 5px;"></i> Centro Comercial Principal
+            <span style="background-color: red; opacity: 0.5; border: 1px solid white; width: 12px; height: 12px; display: inline-block; margin-right: 5px;"></span> Área de Interés
         </div>
         <div class="legend-item">
-            <span class="legend-color purple" style="width: 12px; height: 12px;"></span> Otros Centros Comerciales
+            <span class="legend-color purple" style="width: 12px; height: 12px;"></span> Centros Comerciales
         </div>
         <hr style="margin: 5px 0;">
-
     </div>
     
     <!-- Time period selector -->
@@ -303,11 +289,11 @@
     <!-- Info Box -->
     <div class="info-box">
         <h4>Acerca de este Mapa</h4>
-        <p>Este mapa muestra los tiempos de viaje desde áreas residenciales hacia el Centro Comercial Santa Catarina Pinula.</p>
+        <p>Este mapa muestra los tiempos de viaje desde áreas residenciales hacia el área de interés.</p>
         <ul>
             <li>Los <b>círculos de colores</b> representan zonas residenciales con el tiempo de viaje en minutos.</li>
-            <li>El <b>ícono rojo del carrito</b> representa el centro comercial principal.</li>
-            <li>Los <b>pequeños puntos morados</b> son otros centros comerciales en el área.</li>
+            <li>El <b>área roja</b> representa la zona de interés principal.</li>
+            <li>Los <b>pequeños puntos morados</b> son centros comerciales en el área.</li>
             <li>Use el selector de período para ver cómo cambian los tiempos durante el día.</li>
         </ul>
         <p>Haga clic en cualquier punto para ver más detalles como accesibilidad y transporte público.</p>
@@ -463,48 +449,6 @@ Colegio Discovery,14.5537982,-90.4601406,2.70,9.21,6.47,8.46,8.05,1.00,3.8,2`;
     </script>
     
     <!-- Custom JS - LOAD AFTER EMBEDDED DATA -->
-    <script src="map.js"></script> Metropolitano,14.567197,-90.451689,2.20,5.94,7.33,5.25,5.25,1.23,3.9,3
-Dalias Concepción,14.5605372,-90.4548165,2.90,7.66,8.89,6.25,7.83,1.16,3.5,2
-Buranas,14.558837,-90.4486255,2.60,8.03,8.89,6.38,8.83,1.11,3.4,1
-Westfalia,14.5566677,-90.451649,1.90,6.59,7.89,5.06,6.83,1.20,3.7,2
-Residenciales Los Altos,14.5668769,-90.4703276,4.80,6.06,5.75,6.75,5.67,0.95,3.8,2
-Colegio Maya,14.569061,-90.4717094,5.20,6.18,4.44,7.67,6.42,0.72,3.7,2
-Santa Rosalía,14.5721473,-90.4702142,2.20,5.91,4.22,7.50,6.00,0.71,3.9,3
-El Socorro,14.5709003,-90.4719899,2.40,5.01,3.89,6.07,5.08,0.78,4.1,3
-Hill Top,14.571311,-90.4734143,2.20,5.82,4.44,6.93,6.08,0.76,3.9,2
-Alto Valle,14.5697766,-90.4760407,2.80,7.05,5.44,8.29,7.42,0.77,3.6,1
-Vistas de Alto Valle,14.5692856,-90.476022,2.90,7.61,5.67,9.07,8.08,0.74,3.4,1
-Loma Real,14.5657568,-90.4690817,1.30,4.99,7.08,3.88,4.00,1.42,4.0,3
-Villas del Campo,14.5667192,-90.4713597,1.60,5.14,4.50,5.50,5.42,0.88,4.0,2
-Villas de San Francisco Javier,14.5695535,-90.4741135,2.70,6.86,5.50,7.75,7.33,0.80,3.7,2
-El Casco,14.5690031,-90.4735373,1.70,5.14,4.50,5.50,5.42,0.88,4.1,3
-Forest Hill,14.564695,-90.4696137,1.40,3.00,3.00,3.00,3.00,1.00,4.6,3
-Residencial Valle Bello,14.564712,-90.4703695,1.50,3.00,3.00,3.00,3.00,1.00,4.6,3
-Residenciales Royal Hill,14.5637283,-90.4704284,1.60,3.00,3.00,3.00,3.00,1.00,4.5,3`;Portal de Jacarandas,14.5629730,-90.4703932,1.70,3.00,3.00,3.00,3.00,1.00,4.5,3
-Residenciales La Ensenada,14.5635660,-90.471033,1.50,3.00,3.00,3.00,3.00,1.00,4.5,3
-Altos de Casa Bella,14.5626434,-90.4664216,3.10,9.67,9.97,12.58,10.74,1.00,3.5,2
-02 Apartamentos,14.5625832,-90.4669592,3.20,9.42,10.00,12.75,10.72,1.00,3.5,2
-Casa Giardini,14.5615800,-90.4672881,3.20,10.00,10.19,12.75,10.98,1.00,3.4,2
-Almoreto,14.5607090,-90.4655078,3.00,8.88,8.97,11.58,9.81,1.00,3.6,2
-Condominio Puerta Grande,14.5599810,-90.4671386,3.00,9.21,9.13,11.58,9.97,1.00,3.6,2
-Residenciales San Martin,14.5563954,-90.4623961,2.40,9.13,5.66,7.58,7.45,1.00,3.9,3
-Condominio Parajes de Muxbal,14.5562681,-90.4608973,2.30,10.38,5.53,7.46,7.79,1.00,4.0,3
-Condominio Los Olmos,14.5551705,-90.4594635,2.60,10.38,5.91,7.75,8.01,1.00,3.9,2
-Residenciales Santa Barbara,14.5560613,-90.4580698,2.40,10.38,5.91,7.75,8.01,1.00,3.9,3
-Residenciales Valles del Ensueño,14.5538366,-90.4576524,2.70,9.21,6.47,8.13,7.93,1.00,3.8,2
-Colegio Discovery,14.5537982,-90.4601406,2.70,9.21,6.47,8.46,8.05,1.00,3.8,2`;
-
-
-        // Create a Blob from the CSV string
-        const blob = new Blob([embeddedCSVData], { type: 'text/csv' });
-        
-        // Create a URL for the Blob
-        window.csvDataUrl = URL.createObjectURL(blob);
-        
-        console.log("CSV data embedded and URL created:", window.csvDataUrl);
-    </script>
-    
-    <!-- Custom JS -->
     <script src="map.js"></script>
     
     <!-- Ensure the update button works -->
@@ -569,7 +513,7 @@ Colegio Discovery,14.5537982,-90.4601406,2.70,9.21,6.47,8.46,8.05,1.00,3.8,2`;
                         'evening': 'Hora Pico Tarde (5-7 PM)'
                     }[selectedTime];
                     
-                    titleElement.textContent = `Análisis del Centro Comercial Santa Catarina Pinula - ${timePeriodText}`;
+                    titleElement.textContent = `Análisis del Área de Interés - ${timePeriodText}`;
                     console.log("Título actualizado");
                 }
                 
