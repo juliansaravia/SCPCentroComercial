@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis del Centro Comercial Santa Catarina Pinula</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Leaflet Plugins CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    
+    <!-- Leaflet Heat plugin -->
+    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+        
+        .title-container {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            border: 1px solid #ccc;
+            z-index: 1000;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            max-width: 500px;
+        }
+        
+        .title-container h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #333;
+        }
+        
+        .subtitle {
+            font-size: 12px;
+            color: #555;
+            margin-top: 5px;
+        }
+        
+        .legend-container {
+            position: fixed;
+            bottom: 20px;
+            left: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            z-index: 1000;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            max-width: 250px;
+        }
+        
+        .legend-container h4 {
+            margin: 0 0 5px 0;
+            font-size: 13px;
+        }
+        
+        .legend-item {
+            font-size: 11px;
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            border: 1px solid black;
+        }
+        
+        .green {
+            background-color: green;
+        }
+        
+        .blue {
+            background-color: blue;
+        }
+        
+        .red {
+            background-color: red;
+        }
+        
+        .purple {
+            background-color: purple;
+        }
+        
+        .time-selector {
+            position: fixed;
+            top: 50px;
+            right: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            z-index: 1000;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .time-selector h4 {
+            margin: 0 0 5px 0;
+            font-size: 13px;
+        }
+        
+        .time-selector label {
+            font-size: 12px;
+            display: block;
+            margin-bottom: 3px;
+        }
+        
+        .time-selector button {
+            width: 100%;
+            margin-top: 5px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .time-selector button:hover {
+            background-color: #45a049;
+        }
+        
+        .info-box {
+            position: fixed;
+            bottom: 20px;
+            right: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            z-index: 1000;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            max-width: 250px;
+            font-size: 12px;
+        }
+        
+        .info-box h4 {
+            margin: 0 0 5px 0;
+            font-size: 13px;
+        }
+        
+        /* Custom marker styles */
+        .marker-green, .marker-blue, .marker-red {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-weight: bold;
+            color: white;
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+        }
+        
+        .marker-green {
+            background-color: green;
+        }
+        
+        .marker-blue {
+            background-color: blue;
+        }
+        
+        .marker-red {
+            background-color: red;
+        }
+        
+        .mall-marker {
+            background-color: purple;
+            color: white;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            border: 1px solid white;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Map container -->
+    <div id="map"></div>
+    
+    <!-- Title -->
+    <div class="title-container">
+        <h3>Análisis del Centro Comercial Santa Catarina Pinula</h3>
+        <div class="subtitle">Tiempos de viaje desde áreas residenciales al centro comercial principal</div>
+    </div>
+    
+    <!-- Legend -->
+    <div class="legend-container">
+        <h4>Leyenda de Tiempos de Viaje</h4>
+        <div class="legend-item">
+            <span class="legend-color green"></span> 0-5 minutos
+        </div>
+        <div class="legend-item">
+            <span class="legend-color blue"></span> 5-10 minutos
+        </div>
+        <div class="legend-item">
+            <span class="legend-color red"></span> 10+ minutos
+        </div>
+        <div class="legend-item">
+            <i class="fas fa-shopping-cart" style="color: red; margin-right: 5px;"></i> Centro Comercial Principal
+        </div>
+        <div class="legend-item">
+            <span class="legend-color purple" style="width: 12px; height: 12px;"></span> Otros Centros Comerciales
+        </div>
+    </div>
+    
+    <!-- Time period selector -->
+    <div class="time-selector">
+        <h4>Período del Día:</h4>
+        <div>
+            <input type="radio" id="overall" name="timeOfDay" value="overall" checked>
+            <label for="overall">Promedio General</label>
+        </div>
+        <div>
+            <input type="radio" id="morning" name="timeOfDay" value="morning">
+            <label for="morning">Hora Pico Matutina (7-9 AM)</label>
+        </div>
+        <div>
+            <input type="radio" id="midday" name="timeOfDay" value="midday">
+            <label for="midday">Medio Día (11 AM-2 PM)</label>
+        </div>
+        <div>
+            <input type="radio" id="evening" name="timeOfDay" value="evening">
+            <label for="evening">Hora Pico Vespertina (5-7 PM)</label>
+        </div>
+        <button id="updateTimeView" onclick="updateTimeViewHandler()">Actualizar Vista</button>
+    </div>
+    
+    <!-- Info Box -->
+    <div class="info-box">
+        <h4>Acerca de este Mapa</h4>
+        <p>Este mapa muestra los tiempos de viaje desde áreas residenciales hacia el Centro Comercial Santa Catarina Pinula.</p>
+        <ul>
+            <li>Los <b>círculos de colores</b> representan zonas residenciales con el tiempo de viaje en minutos.</li>
+            <li>El <b>ícono rojo del carrito</b> representa el centro comercial principal.</li>
+            <li>Los <b>pequeños puntos morados</b> son otros centros comerciales en el área.</li>
+            <li>Use el selector de período para ver cómo cambian los tiempos durante el día.</li>
+        </ul>
+        <p>Haga clic en cualquier punto para ver más detalles.</p>
+    </div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Leaflet Plugins JS -->
+    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="map.js"></script>
+    
+    <!-- Ensure the update button works -->
+    <script>
+        function updateTimeViewHandler() {
+            // Obtener período de tiempo seleccionado
+            const selectedTime = document.querySelector('input[name="timeOfDay"]:checked').value;
+            
+            // Check if markerClusters is defined
+            if (typeof markerClusters !== 'undefined') {
+                // Eliminar todos los clusters de marcadores del mapa
+                Object.keys(markerClusters).forEach(period => {
+                    if (map.hasLayer(markerClusters[period])) {
+                        map.removeLayer(markerClusters[period]);
+                    }
+                });
+                
+                // Añadir el cluster de marcadores seleccionado al mapa
+                map.addLayer(markerClusters[selectedTime]);
+                
+                // Actualizar datos del mapa de calor para el período de tiempo seleccionado
+                if (typeof heatMap !== 'undefined' && map.hasLayer(heatMap)) {
+                    map.removeLayer(heatMap);
+                    
+                    const newHeatData = residentialData.map(location => {
+                        return [location.lat, location.lng, location.times[selectedTime]]; 
+                    });
+                    
+                    const newHeatMap = L.heatLayer(newHeatData, {
+                        radius: 25,
+                        blur: 15,
+                        maxZoom: 17,
+                        gradient: {0.2: 'green', 0.5: 'blue', 0.8: 'red'}
+                    });
+                    
+                    heatMap = newHeatMap;
+                    map.addLayer(heatMap);
+                }
+                
+                // Actualizar título para mostrar el período de tiempo seleccionado
+                const titleElement = document.querySelector('.title-container h3');
+                if (titleElement) {
+                    const timePeriodText = {
+                        'overall': 'Promedio General',
+                        'morning': 'Hora Pico Matutina (7-9 AM)',
+                        'midday': 'Medio Día (11 AM-2 PM)',
+                        'evening': 'Hora Pico Vespertina (5-7 PM)'
+                    }[selectedTime];
+                    
+                    titleElement.textContent = `Análisis del Centro Comercial Santa Catarina Pinula - ${timePeriodText}`;
+                }
+                
+                console.log(`Cambió a vista ${selectedTime}`);
+            } else {
+                console.error("markerClusters not defined!");
+            }
+        }
+        
+        // Also add the event listener when document is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            const updateButton = document.getElementById('updateTimeView');
+            if (updateButton) {
+                updateButton.addEventListener('click', updateTimeViewHandler);
+            } else {
+                console.error("Update button not found!");
+            }
+        });
+    </script>
+</body>
+</html>
