@@ -246,7 +246,7 @@
         </div>
         <div>
             <input type="radio" id="morning" name="timeOfDay" value="morning">
-            <label for="morning">Hora Pico Matutina (7-9 AM)</label>
+            <label for="morning">Hora Pico Mañana (7-9 AM)</label>
         </div>
         <div>
             <input type="radio" id="midday" name="timeOfDay" value="midday">
@@ -254,7 +254,7 @@
         </div>
         <div>
             <input type="radio" id="evening" name="timeOfDay" value="evening">
-            <label for="evening">Hora Pico Vespertina (5-7 PM)</label>
+            <label for="evening">Hora Pico Tarde (5-7 PM)</label>
         </div>
         <button id="updateTimeView" onclick="updateTimeViewHandler()">Actualizar Vista</button>
     </div>
@@ -324,9 +324,9 @@
                 if (titleElement) {
                     const timePeriodText = {
                         'overall': 'Promedio General',
-                        'morning': 'Hora Pico Matutina (7-9 AM)',
+                        'morning': 'Hora Pico Mañana (7-9 AM)',
                         'midday': 'Medio Día (11 AM-2 PM)',
-                        'evening': 'Hora Pico Vespertina (5-7 PM)'
+                        'evening': 'Hora Pico Tarde (5-7 PM)'
                     }[selectedTime];
                     
                     titleElement.textContent = `Análisis del Centro Comercial Santa Catarina Pinula - ${timePeriodText}`;
