@@ -280,21 +280,9 @@ function addResidentialMarkers() {
                 Distancia: ${location.distance} km<br>
                 Factor de tráfico: ${location.trafficFactor}<br>
                 Accesibilidad: ${location.accessibilityScore}/5<br>
-                Transporte público: `;
+                 `;
                 
-            // Añadir iconos de transporte público basados en la puntuación
-            for (let i = 0; i < location.publicTransport; i++) {
-                popupContent += '<i class="fas fa-bus" style="color: #3388cc;"></i>';
-            }
-            
-            const marker = L.marker([location.lat, location.lng], { icon: icon })
-                .bindPopup(popupContent);
-                
-            // Añadir al cluster apropiado
-            markerClusters[period].addLayer(marker);
-        });
-    });
-    
+         
     console.log("Marcadores residenciales añadidos con éxito");
 }
 
