@@ -120,7 +120,7 @@ async function loadResidentialData() {
             if (!lines[i].trim()) continue; // Saltar líneas vacías
             
             const values = lines[i].split(',');
-            if (values.length < 11) continue; // Asegurarse de que hay suficientes valores
+            if (values.length < 10) continue; // Asegurarse de que hay suficientes valores - reducido de 11 a 10
             
             try {
                 const location = {
@@ -135,8 +135,8 @@ async function loadResidentialData() {
                         evening: parseFloat(values[7])
                     },
                     trafficFactor: parseFloat(values[8]),
-                    accessibilityScore: parseFloat(values[9]),
-                    publicTransport: parseInt(values[10])
+                    accessibilityScore: parseFloat(values[9])
+                    // Eliminada la propiedad publicTransport
                 };
                 
                 // Verificar que las coordenadas sean válidas
@@ -180,7 +180,7 @@ function loadHardcodedData() {
             if (!lines[i].trim()) continue; // Saltar líneas vacías
             
             const values = lines[i].split(',');
-            if (values.length < 11) continue; // Asegurarse de que hay suficientes valores
+            if (values.length < 10) continue; // Asegurarse de que hay suficientes valores - reducido de 11 a 10
             
             try {
                 const location = {
@@ -195,8 +195,8 @@ function loadHardcodedData() {
                         evening: parseFloat(values[7])
                     },
                     trafficFactor: parseFloat(values[8]),
-                    accessibilityScore: parseFloat(values[9]),
-                   
+                    accessibilityScore: parseFloat(values[9])
+                   // Eliminada la propiedad publicTransport
                 };
                 
                 // Verificar que las coordenadas sean válidas
@@ -224,8 +224,8 @@ function loadHardcodedData() {
                 },
                 distance: 3.30,
                 trafficFactor: 1.21,
-                accessibilityScore: 3.5,
-                publicTransport: 2
+                accessibilityScore: 3.5
+                // Eliminada la propiedad publicTransport
             },
             // Más datos predefinidos aquí si es necesario
         ];
@@ -280,9 +280,16 @@ function addResidentialMarkers() {
                 Distancia: ${location.distance} km<br>
                 Factor de tráfico: ${location.trafficFactor}<br>
                 Accesibilidad: ${location.accessibilityScore}/5<br>
-                 `;
-                
-         
+                `;
+            
+            // Crear marcador con el icono personalizado y añadirlo al cluster apropiado
+            const marker = L.marker([location.lat, location.lng], { icon: icon })
+                .bindPopup(popupContent);
+            
+            markerClusters[period].addLayer(marker);
+        });
+    });
+    
     console.log("Marcadores residenciales añadidos con éxito");
 }
 
