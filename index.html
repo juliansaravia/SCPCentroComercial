@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -200,11 +201,7 @@
             color: #3388cc;
         }
         
-        .transport-rating {
-            display: inline-block;
-            margin-right: 5px;
-            color: #3388cc;
-        }
+        /* Removed transport-rating class */
         
         .traffic-factor {
             display: inline-block;
@@ -240,7 +237,7 @@
     <!-- Title -->
     <div class="title-container">
         <h3>Análisis del Área de Interés</h3>
-        <div class="subtitle">Tiempos de viaje, accesibilidad y transporte desde áreas residenciales</div>
+        <div class="subtitle">Tiempos de viaje y accesibilidad desde áreas residenciales</div>
     </div>
     
     <!-- Legend -->
@@ -296,7 +293,7 @@
             <li>Los <b>pequeños puntos morados</b> son centros comerciales en el área.</li>
             <li>Use el selector de período para ver cómo cambian los tiempos durante el día.</li>
         </ul>
-        <p>Haga clic en cualquier punto para ver más detalles como accesibilidad y transporte público.</p>
+        <p>Haga clic en cualquier punto para ver más detalles como accesibilidad.</p>
     </div>
     
     <!-- Leaflet JS -->
@@ -322,54 +319,54 @@
     <!-- Embedded CSV data as JavaScript -->
     <script>
         // This is the CSV data embedded directly in HTML
-        const embeddedCSVData = `name,lat,lng,distance,overall_time,morning_time,midday_time,evening_time,traffic_factor,accessibility_score,public_transport
-Apartamentos Monet,14.565411,-90.442502,3.30,6.97,8.42,6.50,6.00,1.21,3.5,2
-Apartamentos Victoria,14.568815,-90.449465,2.30,4.74,5.92,4.31,4.00,1.25,4.1,3
-Bosques de las Luces,14.565138,-90.461926,0.50,3.51,3.50,3.38,3.67,1.00,4.8,4
-Condominio Basseterre,14.570475,-90.460591,1.20,1.69,2.08,1.50,1.50,1.23,4.9,3
-Condominio Las Luces,14.56557,-90.467292,0.71,4.77,4.81,4.60,4.89,1.01,4.1,2
-Laguna del Bosque,14.565939,-90.436841,3.80,8.08,9.58,7.50,7.17,1.19,3.2,1
-Lomas de Puerta Parada,14.564795,-90.463375,0.30,3.54,3.58,3.38,3.67,1.01,4.7,4
-Navani,14.568753,-90.461195,0.76,2.86,3.08,2.75,2.75,1.08,4.6,3
-Paseo Residencias,14.568667,-90.458719,0.92,2.78,3.33,2.50,2.50,1.20,4.7,3
-Portal de la Fuente,14.569073,-90.461426,1.00,3.19,3.50,3.06,3.00,1.10,4.5,3
-Residencial Monticello,14.567752,-90.45663,1.70,2.95,3.92,2.44,2.50,1.33,4.6,3
-Residencial Puerta Parada,14.560377,-90.46189,0.37,1.86,2.08,1.75,1.75,1.12,4.9,4
-Torre Metropolitano,14.567692,-90.451683,2.40,5.18,6.42,4.63,4.50,1.24,4.0,2
-Villa Lolita,14.569411,-90.447349,2.50,5.14,6.33,4.75,4.33,1.23,4.1,2
-Villas de Entreluces,14.567379,-90.455048,1.70,4.45,5.17,3.94,4.25,1.16,4.2,3
-Colegio Montessori,14.5689,-90.4608,1.00,3.90,4.54,3.56,3.58,1.16,4.5,4
-Colegio Metropolitano,14.567197,-90.451689,2.20,5.94,7.33,5.25,5.25,1.23,3.9,3
-Dalias Concepción,14.5605372,-90.4548165,2.90,7.66,8.89,6.25,7.83,1.16,3.5,2
-Buranas,14.558837,-90.4486255,2.60,8.03,8.89,6.38,8.83,1.11,3.4,1
-Westfalia,14.5566677,-90.451649,1.90,6.59,7.89,5.06,6.83,1.20,3.7,2
-Residenciales Los Altos,14.5668769,-90.4703276,4.80,6.06,5.75,6.75,5.67,0.95,3.8,2
-Colegio Maya,14.569061,-90.4717094,5.20,6.18,4.44,7.67,6.42,0.72,3.7,2
-Santa Rosalía,14.5721473,-90.4702142,2.20,5.91,4.22,7.50,6.00,0.71,3.9,3
-El Socorro,14.5709003,-90.4719899,2.40,5.01,3.89,6.07,5.08,0.78,4.1,3
-Hill Top,14.571311,-90.4734143,2.20,5.82,4.44,6.93,6.08,0.76,3.9,2
-Alto Valle,14.5697766,-90.4760407,2.80,7.05,5.44,8.29,7.42,0.77,3.6,1
-Vistas de Alto Valle,14.5692856,-90.476022,2.90,7.61,5.67,9.07,8.08,0.74,3.4,1
-Loma Real,14.5657568,-90.4690817,1.30,4.99,7.08,3.88,4.00,1.42,4.0,3
-Villas del Campo,14.5667192,-90.4713597,1.60,5.14,4.50,5.50,5.42,0.88,4.0,2
-Villas de San Francisco Javier,14.5695535,-90.4741135,2.70,6.86,5.50,7.75,7.33,0.80,3.7,2
-El Casco,14.5690031,-90.4735373,1.70,5.14,4.50,5.50,5.42,0.88,4.1,3
-Forest Hill,14.564695,-90.4696137,1.40,3.00,3.00,3.00,3.00,1.00,4.6,3
-Residencial Valle Bello,14.564712,-90.4703695,1.50,3.00,3.00,3.00,3.00,1.00,4.6,3
-Residenciales Royal Hill,14.5637283,-90.4704284,1.60,3.00,3.00,3.00,3.00,1.00,4.5,3
-Portal de Jacarandas,14.5629730,-90.4703932,1.70,3.00,3.00,3.00,3.00,1.00,4.5,3
-Residenciales La Ensenada,14.5635660,-90.471033,1.50,3.00,3.00,3.00,3.00,1.00,4.5,3
-Altos de Casa Bella,14.5626434,-90.4664216,3.10,9.67,9.97,12.58,10.74,1.00,3.5,2
-02 Apartamentos,14.5625832,-90.4669592,3.20,9.42,10.00,12.75,10.72,1.00,3.5,2
-Casa Giardini,14.5615800,-90.4672881,3.20,10.00,10.19,12.75,10.98,1.00,3.4,2
-Almoreto,14.5607090,-90.4655078,3.00,8.88,8.97,11.58,9.81,1.00,3.6,2
-Condominio Puerta Grande,14.5599810,-90.4671386,3.00,9.21,9.13,11.58,9.97,1.00,3.6,2
-Residenciales San Martin,14.5563954,-90.4623961,2.40,9.13,5.66,7.58,7.45,1.00,3.9,3
-Condominio Parajes de Muxbal,14.5562681,-90.4608973,2.30,10.38,5.53,7.46,7.79,1.00,4.0,3
-Condominio Los Olmos,14.5551705,-90.4594635,2.60,10.38,5.91,7.75,8.01,1.00,3.9,2
-Residenciales Santa Barbara,14.5560613,-90.4580698,2.40,10.38,5.91,7.75,8.01,1.00,3.9,3
-Residenciales Valles del Ensueño,14.5538366,-90.4576524,2.70,9.21,6.47,8.13,7.93,1.00,3.8,2
-Colegio Discovery,14.5537982,-90.4601406,2.70,9.21,6.47,8.46,8.05,1.00,3.8,2`;
+        const embeddedCSVData = `name,lat,lng,distance,overall_time,morning_time,midday_time,evening_time,traffic_factor,accessibility_score
+Apartamentos Monet,14.565411,-90.442502,3.30,6.97,8.42,6.50,6.00,1.21,3.5
+Apartamentos Victoria,14.568815,-90.449465,2.30,4.74,5.92,4.31,4.00,1.25,4.1
+Bosques de las Luces,14.565138,-90.461926,0.50,3.51,3.50,3.38,3.67,1.00,4.8
+Condominio Basseterre,14.570475,-90.460591,1.20,1.69,2.08,1.50,1.50,1.23,4.9
+Condominio Las Luces,14.56557,-90.467292,0.71,4.77,4.81,4.60,4.89,1.01,4.1
+Laguna del Bosque,14.565939,-90.436841,3.80,8.08,9.58,7.50,7.17,1.19,3.2
+Lomas de Puerta Parada,14.564795,-90.463375,0.30,3.54,3.58,3.38,3.67,1.01,4.7
+Navani,14.568753,-90.461195,0.76,2.86,3.08,2.75,2.75,1.08,4.6
+Paseo Residencias,14.568667,-90.458719,0.92,2.78,3.33,2.50,2.50,1.20,4.7
+Portal de la Fuente,14.569073,-90.461426,1.00,3.19,3.50,3.06,3.00,1.10,4.5
+Residencial Monticello,14.567752,-90.45663,1.70,2.95,3.92,2.44,2.50,1.33,4.6
+Residencial Puerta Parada,14.560377,-90.46189,0.37,1.86,2.08,1.75,1.75,1.12,4.9
+Torre Metropolitano,14.567692,-90.451683,2.40,5.18,6.42,4.63,4.50,1.24,4.0
+Villa Lolita,14.569411,-90.447349,2.50,5.14,6.33,4.75,4.33,1.23,4.1
+Villas de Entreluces,14.567379,-90.455048,1.70,4.45,5.17,3.94,4.25,1.16,4.2
+Colegio Montessori,14.5689,-90.4608,1.00,3.90,4.54,3.56,3.58,1.16,4.5
+Colegio Metropolitano,14.567197,-90.451689,2.20,5.94,7.33,5.25,5.25,1.23,3.9
+Dalias Concepción,14.5605372,-90.4548165,2.90,7.66,8.89,6.25,7.83,1.16,3.5
+Buranas,14.558837,-90.4486255,2.60,8.03,8.89,6.38,8.83,1.11,3.4
+Westfalia,14.5566677,-90.451649,1.90,6.59,7.89,5.06,6.83,1.20,3.7
+Residenciales Los Altos,14.5668769,-90.4703276,4.80,6.06,5.75,6.75,5.67,0.95,3.8
+Colegio Maya,14.569061,-90.4717094,5.20,6.18,4.44,7.67,6.42,0.72,3.7
+Santa Rosalía,14.5721473,-90.4702142,2.20,5.91,4.22,7.50,6.00,0.71,3.9
+El Socorro,14.5709003,-90.4719899,2.40,5.01,3.89,6.07,5.08,0.78,4.1
+Hill Top,14.571311,-90.4734143,2.20,5.82,4.44,6.93,6.08,0.76,3.9
+Alto Valle,14.5697766,-90.4760407,2.80,7.05,5.44,8.29,7.42,0.77,3.6
+Vistas de Alto Valle,14.5692856,-90.476022,2.90,7.61,5.67,9.07,8.08,0.74,3.4
+Loma Real,14.5657568,-90.4690817,1.30,4.99,7.08,3.88,4.00,1.42,4.0
+Villas del Campo,14.5667192,-90.4713597,1.60,5.14,4.50,5.50,5.42,0.88,4.0
+Villas de San Francisco Javier,14.5695535,-90.4741135,2.70,6.86,5.50,7.75,7.33,0.80,3.7
+El Casco,14.5690031,-90.4735373,1.70,5.14,4.50,5.50,5.42,0.88,4.1
+Forest Hill,14.564695,-90.4696137,1.40,3.00,3.00,3.00,3.00,1.00,4.6
+Residencial Valle Bello,14.564712,-90.4703695,1.50,3.00,3.00,3.00,3.00,1.00,4.6
+Residenciales Royal Hill,14.5637283,-90.4704284,1.60,3.00,3.00,3.00,3.00,1.00,4.5
+Portal de Jacarandas,14.5629730,-90.4703932,1.70,3.00,3.00,3.00,3.00,1.00,4.5
+Residenciales La Ensenada,14.5635660,-90.471033,1.50,3.00,3.00,3.00,3.00,1.00,4.5
+Altos de Casa Bella,14.5626434,-90.4664216,3.10,9.67,9.97,12.58,10.74,1.00,3.5
+02 Apartamentos,14.5625832,-90.4669592,3.20,9.42,10.00,12.75,10.72,1.00,3.5
+Casa Giardini,14.5615800,-90.4672881,3.20,10.00,10.19,12.75,10.98,1.00,3.4
+Almoreto,14.5607090,-90.4655078,3.00,8.88,8.97,11.58,9.81,1.00,3.6
+Condominio Puerta Grande,14.5599810,-90.4671386,3.00,9.21,9.13,11.58,9.97,1.00,3.6
+Residenciales San Martin,14.5563954,-90.4623961,2.40,9.13,5.66,7.58,7.45,1.00,3.9
+Condominio Parajes de Muxbal,14.5562681,-90.4608973,2.30,10.38,5.53,7.46,7.79,1.00,4.0
+Condominio Los Olmos,14.5551705,-90.4594635,2.60,10.38,5.91,7.75,8.01,1.00,3.9
+Residenciales Santa Barbara,14.5560613,-90.4580698,2.40,10.38,5.91,7.75,8.01,1.00,3.9
+Residenciales Valles del Ensueño,14.5538366,-90.4576524,2.70,9.21,6.47,8.13,7.93,1.00,3.8
+Colegio Discovery,14.5537982,-90.4601406,2.70,9.21,6.47,8.46,8.05,1.00,3.8`;
 
         // Create a Blob from the CSV string
         const blob = new Blob([embeddedCSVData], { type: 'text/csv' });
