@@ -196,7 +196,7 @@ function loadHardcodedData() {
                     },
                     trafficFactor: parseFloat(values[8]),
                     accessibilityScore: parseFloat(values[9]),
-                    publicTransport: parseInt(values[10])
+                   
                 };
                 
                 // Verificar que las coordenadas sean válidas
