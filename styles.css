@@ -308,48 +308,166 @@ body {
         font-size: 10px;
     }
     
+    /* Fixed legend and controls for mobile */
     .legend-container {
-        bottom: 10px;
+        bottom: 40px;
         left: 10px;
-        max-width: 150px;
-        max-height: 40px; /* Start collapsed on mobile */
+        max-width: 180px; /* Wider to fit content */
+        background-color: rgba(255, 255, 255, 0.9);
+        z-index: 1500; /* Higher z-index to ensure visibility */
+        transition: max-height 0.3s ease;
+        overflow-y: auto;
+        max-height: 200px; /* Default expanded state */
+    }
+    
+    .legend-container.collapsed {
+        max-height: 35px; /* Collapsed state height just enough for title and button */
+        overflow: hidden;
     }
     
     .legend-toggle {
         display: block; /* Show on mobile */
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        color: #555;
+        padding: 5px;
+        z-index: 2;
     }
     
     .time-selector {
         top: 60px;
         right: 10px;
-        max-width: 150px;
-        max-height: 45px; /* Start collapsed on mobile */
+        max-width: 180px; /* Wider to fit content */
+        background-color: rgba(255, 255, 255, 0.9);
+        z-index: 1500; /* Higher z-index */
+        transition: max-height 0.3s ease;
+        overflow-y: auto;
+        max-height: 200px; /* Default expanded state */
+    }
+    
+    .time-selector.collapsed {
+        max-height: 35px; /* Collapsed state */
+        overflow: hidden;
     }
     
     .time-toggle {
         display: block; /* Show on mobile */
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        color: #555;
+        padding: 5px;
+        z-index: 2;
     }
     
     .info-box {
-        bottom: 10px;
+        bottom: 40px;
         right: 10px;
-        max-width: 150px;
-        max-height: 40px; /* Start collapsed on mobile */
+        max-width: 180px; /* Wider to fit content */
+        background-color: rgba(255, 255, 255, 0.9);
+        z-index: 1500; /* Higher z-index */
+        transition: max-height 0.3s ease;
+        overflow-y: auto;
+        max-height: 200px; /* Default expanded state */
+    }
+    
+    .info-box.collapsed {
+        max-height: 35px; /* Collapsed state */
+        overflow: hidden;
     }
     
     .info-toggle {
         display: block; /* Show on mobile */
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        color: #555;
+        padding: 5px;
+        z-index: 2;
     }
     
-    /* Make the layer control smaller on mobile */
+    /* Improve text fitting in boxes */
+    .legend-item {
+        font-size: 10px;
+        margin-bottom: 5px;
+        line-height: 1.3;
+        display: flex;
+        align-items: flex-start;
+        word-break: break-word;
+    }
+    
+    .legend-container h4,
+    .time-selector h4,
+    .info-box h4 {
+        margin: 0 0 8px 0;
+        font-size: 12px;
+        padding-right: 25px; /* Space for toggle button */
+    }
+    
+    .time-selector label {
+        font-size: 11px;
+        display: block;
+        margin-bottom: 5px;
+        line-height: 1.3;
+        word-break: break-word;
+    }
+    
+    .info-box p, 
+    .info-box li {
+        font-size: 10px;
+        line-height: 1.3;
+        margin: 5px 0;
+        word-break: break-word;
+    }
+    
+    /* Make the layer control smaller and always collapsed on mobile */
     .leaflet-control-layers {
         font-size: 11px;
+    }
+    
+    .leaflet-control-layers-expanded {
+        padding: 6px 8px;
+        background-color: rgba(255, 255, 255, 0.9);
     }
     
     /* Make sure popups are readable on mobile */
     .leaflet-popup-content {
         font-size: 11px;
         max-width: 200px;
+    }
+    
+    /* Ensure attribution is visible */
+    .leaflet-control-attribution {
+        font-size: 9px;
+        max-width: 200px;
+        white-space: normal;
+        height: auto;
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+    
+    /* Make button for updating time view more visible */
+    .time-selector button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 8px;
+        font-size: 13px;
+        font-weight: bold;
+        min-height: 40px;
+        width: 100%;
+        margin-top: 8px;
     }
 }
 
