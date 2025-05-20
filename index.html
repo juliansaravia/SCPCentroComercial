@@ -34,7 +34,7 @@
     
     <!-- Legend -->
     <div class="legend-container">
-        <button class="legend-toggle"><i class="fa fa-chevron-up"></i></button>
+        <button class="legend-toggle" type="button" aria-label="Toggle legend"><i class="fa fa-chevron-up"></i></button>
         <h4>Leyenda de Tiempos de Viaje</h4>
         <div class="legend-item">
             <span class="legend-color green"></span> 0-5 minutos
@@ -51,12 +51,11 @@
         <div class="legend-item">
             <span class="legend-color purple" style="width: 12px; height: 12px;"></span> Centros Comerciales
         </div>
-        <hr style="margin: 5px 0;">
     </div>
     
     <!-- Time period selector -->
     <div class="time-selector">
-        <button class="time-toggle"><i class="fa fa-chevron-up"></i></button>
+        <button class="time-toggle" type="button" aria-label="Toggle time selector"><i class="fa fa-chevron-up"></i></button>
         <h4>Período del Día:</h4>
         <div>
             <input type="radio" id="overall" name="timeOfDay" value="overall" checked>
@@ -74,12 +73,12 @@
             <input type="radio" id="evening" name="timeOfDay" value="evening">
             <label for="evening">Hora Pico Tarde (5-7 PM)</label>
         </div>
-        <button id="updateTimeView" onclick="updateTimeViewHandler()">Actualizar Vista</button>
+        <button id="updateTimeView" type="button">Actualizar Vista</button>
     </div>
     
     <!-- Info Box -->
     <div class="info-box">
-        <button class="info-toggle"><i class="fa fa-chevron-up"></i></button>
+        <button class="info-toggle" type="button" aria-label="Toggle info box"><i class="fa fa-chevron-up"></i></button>
         <h4>Acerca de este Mapa</h4>
         <p>Este mapa muestra los tiempos de viaje desde áreas residenciales hacia el área de interés.</p>
         <ul>
@@ -88,7 +87,6 @@
             <li>Los <b>pequeños puntos morados</b> son centros comerciales en el área.</li>
             <li>Use el selector de período para ver cómo cambian los tiempos durante el día.</li>
         </ul>
-        <p>Haga clic en cualquier punto para ver más detalles como accesibilidad.</p>
     </div>
     
     <!-- Debug Info Container -->
