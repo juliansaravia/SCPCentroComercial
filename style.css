@@ -1,5 +1,6 @@
-/* styles.css - Estilos para la aplicación de análisis del área de interés */
+/* styles.css - Styles for Análisis del Área de Interés */
 
+/* Base styles */
 body {
     margin: 0;
     padding: 0;
@@ -11,7 +12,7 @@ body {
     height: 100vh;
 }
 
-/* Containers */
+/* Title container */
 .title-container {
     position: fixed;
     top: 10px;
@@ -41,7 +42,7 @@ body {
     margin-top: 5px;
 }
 
-/* Legend styles with collapsible functionality */
+/* Legend container */
 .legend-container {
     position: fixed;
     bottom: 20px;
@@ -58,6 +59,7 @@ body {
     overflow-y: auto;
 }
 
+/* Collapsed state for mobile */
 .legend-container.collapsed {
     max-height: 40px;
     overflow: hidden;
@@ -113,7 +115,7 @@ body {
     background-color: purple;
 }
 
-/* Time selector with collapsible functionality */
+/* Time selector */
 .time-selector {
     position: fixed;
     top: 80px; /* Adjusted to not overlap with title */
@@ -128,6 +130,7 @@ body {
     max-width: 250px;
 }
 
+/* Collapsed state for mobile */
 .time-selector.collapsed {
     max-height: 45px;
     overflow: hidden;
@@ -173,7 +176,7 @@ body {
     background-color: #45a049;
 }
 
-/* Info box with collapsible functionality */
+/* Info box */
 .info-box {
     position: fixed;
     bottom: 20px;
@@ -191,6 +194,7 @@ body {
     overflow-y: auto;
 }
 
+/* Collapsed state for mobile */
 .info-box.collapsed {
     max-height: 40px;
     overflow: hidden;
@@ -253,7 +257,7 @@ body {
     color: orange;
 }
 
-/* Separador horizontal en la leyenda */
+/* Legend separator */
 .legend-container hr {
     border: none;
     border-top: 1px solid #ccc;
@@ -361,30 +365,31 @@ body {
     }
 }
 
-/* Fullscreen button styles */
-.fullscreen-button {
+/* Fullscreen mode enhancements */
+.fullscreen-active #map {
+    height: 100% !important;
+    width: 100% !important;
     position: fixed;
-    bottom: 70px;
-    right: 10px;
-    z-index: 1000;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 8px;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
 }
 
-/* Debug button styles */
-.debug-button {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    z-index: 2000;
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
+/* Better contrast for layer control when using the dark map */
+.leaflet-control-layers {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Improve visibility of zoom controls */
+.leaflet-control-zoom a {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-weight: bold;
+}
+
+/* Fix for tap issues on iOS */
+.no-tap-delay {
+    touch-action: manipulation;
 }
