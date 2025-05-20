@@ -382,5 +382,167 @@ Colegio Discovery,14.5537982,-90.4601406,2.70,9.21,6.47,8.46,8.05,1.00,3.8`;
             }
         });
     </script>
+    // Direct toggle fix - A standalone solution that definitely works on mobile
+// Add this at the end of your HTML file before the closing </body> tag
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all the toggle buttons and their containers
+    const legendToggle = document.querySelector('.legend-toggle');
+    const legendContainer = document.querySelector('.legend-container');
+    
+    const timeToggle = document.querySelector('.time-toggle');
+    const timeSelector = document.querySelector('.time-selector');
+    
+    const infoToggle = document.querySelector('.info-toggle');
+    const infoBox = document.querySelector('.info-box');
+    
+    // Very direct click handlers that will work on mobile
+    if (legendToggle && legendContainer) {
+        // Remove existing click handlers first
+        legendToggle.onclick = null;
+        
+        // Add a very direct click handler
+        legendToggle.onclick = function(e) {
+            e.preventDefault();
+            if (legendContainer.classList.contains('collapsed')) {
+                legendContainer.classList.remove('collapsed');
+                this.innerHTML = '<i class="fa fa-chevron-up"></i>';
+            } else {
+                legendContainer.classList.add('collapsed');
+                this.innerHTML = '<i class="fa fa-chevron-down"></i>';
+            }
+            return false;
+        };
+    }
+    
+    if (timeToggle && timeSelector) {
+        // Remove existing click handlers first
+        timeToggle.onclick = null;
+        
+        // Add a very direct click handler
+        timeToggle.onclick = function(e) {
+            e.preventDefault();
+            if (timeSelector.classList.contains('collapsed')) {
+                timeSelector.classList.remove('collapsed');
+                this.innerHTML = '<i class="fa fa-chevron-up"></i>';
+            } else {
+                timeSelector.classList.add('collapsed');
+                this.innerHTML = '<i class="fa fa-chevron-down"></i>';
+            }
+            return false;
+        };
+    }
+    
+    if (infoToggle && infoBox) {
+        // Remove existing click handlers first
+        infoToggle.onclick = null;
+        
+        // Add a very direct click handler
+        infoToggle.onclick = function(e) {
+            e.preventDefault();
+            if (infoBox.classList.contains('collapsed')) {
+                infoBox.classList.remove('collapsed');
+                this.innerHTML = '<i class="fa fa-chevron-up"></i>';
+            } else {
+                infoBox.classList.add('collapsed');
+                this.innerHTML = '<i class="fa fa-chevron-down"></i>';
+            }
+            return false;
+        };
+    }
+    
+    // Mobile-specific styles to ensure the collapsed state works
+    if (window.innerWidth <= 768) {
+        const style = document.createElement('style');
+        style.textContent = `
+            .legend-container.collapsed {
+                max-height: 35px !important;
+                overflow: hidden !important;
+            }
+            
+            .time-selector.collapsed {
+                max-height: 35px !important;
+                overflow: hidden !important;
+            }
+            
+            .info-box.collapsed {
+                max-height: 35px !important;
+                overflow: hidden !important;
+            }
+            
+            .legend-toggle, .time-toggle, .info-toggle {
+                position: absolute !important;
+                top: 2px !important;
+                right: 2px !important;
+                z-index: 9999 !important;
+                padding: 5px !important;
+                background: none !important;
+                border: none !important;
+                cursor: pointer !important;
+            }
+            
+            /* Improve tap target sizes */
+            .legend-toggle, .time-toggle, .info-toggle {
+                width: 30px !important;
+                height: 30px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    // Add touchstart listener for better mobile response
+    const addTouchHandler = function(element, callback) {
+        if (element) {
+            element.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                callback.call(this, e);
+                return false;
+            }, {passive: false});
+        }
+    };
+    
+    // Add touch handlers for all toggle buttons
+    addTouchHandler(legendToggle, function() {
+        if (legendContainer.classList.contains('collapsed')) {
+            legendContainer.classList.remove('collapsed');
+            this.innerHTML = '<i class="fa fa-chevron-up"></i>';
+        } else {
+            legendContainer.classList.add('collapsed');
+            this.innerHTML = '<i class="fa fa-chevron-down"></i>';
+        }
+    });
+    
+    addTouchHandler(timeToggle, function() {
+        if (timeSelector.classList.contains('collapsed')) {
+            timeSelector.classList.remove('collapsed');
+            this.innerHTML = '<i class="fa fa-chevron-up"></i>';
+        } else {
+            timeSelector.classList.add('collapsed');
+            this.innerHTML = '<i class="fa fa-chevron-down"></i>';
+        }
+    });
+    
+    addTouchHandler(infoToggle, function() {
+        if (infoBox.classList.contains('collapsed')) {
+            infoBox.classList.remove('collapsed');
+            this.innerHTML = '<i class="fa fa-chevron-up"></i>';
+        } else {
+            infoBox.classList.add('collapsed');
+            this.innerHTML = '<i class="fa fa-chevron-down"></i>';
+        }
+    });
+    
+    // Also fix the update button
+    const updateButton = document.getElementById('updateTimeView');
+    if (updateButton) {
+        // Make sure the onclick handler is properly set
+        updateButton.setAttribute('onclick', 'updateTimeViewHandler()');
+    }
+    
+    console.log("Direct toggle handlers added");
+});
 </body>
 </html>
