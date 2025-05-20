@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,223 +13,16 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
     
-    <!-- Leaflet Heat plugin -->
-    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
-    
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-        
-        #map {
-            width: 100%;
-            height: 100vh;
-        }
-        
-        .title-container {
-            position: fixed;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: white;
-            border: 1px solid #ccc;
-            z-index: 1000;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            max-width: 500px;
-        }
-        
-        .title-container h3 {
-            margin: 0;
-            font-size: 16px;
-            color: #333;
-        }
-        
-        .subtitle {
-            font-size: 12px;
-            color: #555;
-            margin-top: 5px;
-        }
-        
-        .legend-container {
-            position: fixed;
-            bottom: 20px;
-            left: 10px;
-            background-color: white;
-            border: 1px solid #ccc;
-            z-index: 1000;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            max-width: 250px;
-        }
-        
-        .legend-container h4 {
-            margin: 0 0 5px 0;
-            font-size: 13px;
-        }
-        
-        .legend-item {
-            font-size: 11px;
-            margin-bottom: 3px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .legend-color {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 5px;
-            border: 1px solid black;
-        }
-        
-        .green {
-            background-color: green;
-        }
-        
-        .blue {
-            background-color: blue;
-        }
-        
-        .red {
-            background-color: red;
-        }
-        
-        .purple {
-            background-color: purple;
-        }
-        
-        .time-selector {
-            position: fixed;
-            top: 50px;
-            right: 10px;
-            background-color: white;
-            border: 1px solid #ccc;
-            z-index: 1000;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        
-        .time-selector h4 {
-            margin: 0 0 5px 0;
-            font-size: 13px;
-        }
-        
-        .time-selector label {
-            font-size: 12px;
-            display: block;
-            margin-bottom: 3px;
-        }
-        
-        .time-selector button {
-            width: 100%;
-            margin-top: 5px;
-            background-color: #4CAF50;
-            color: white;
-            padding: 5px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        
-        .time-selector button:hover {
-            background-color: #45a049;
-        }
-        
-        .info-box {
-            position: fixed;
-            bottom: 20px;
-            right: 10px;
-            background-color: white;
-            border: 1px solid #ccc;
-            z-index: 1000;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            max-width: 250px;
-            font-size: 12px;
-        }
-        
-        .info-box h4 {
-            margin: 0 0 5px 0;
-            font-size: 13px;
-        }
-        
-        /* Custom marker styles */
-        .marker-green, .marker-blue, .marker-red {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            font-weight: bold;
-            color: white;
-            width: 25px;
-            height: 25px;
-            line-height: 25px;
-            text-align: center;
-        }
-        
-        .marker-green {
-            background-color: green;
-        }
-        
-        .marker-blue {
-            background-color: blue;
-        }
-        
-        .marker-red {
-            background-color: red;
-        }
-        
+    <!-- Custom CSS (external file) -->
+    <link rel="stylesheet" href="styles.css" />
     
-        /* Nuevos estilos para los datos adicionales */
-        .accessibility-rating {
-            display: inline-block;
-            margin-right: 5px;
-            color: #3388cc;
-        }
-        
-        /* Removed transport-rating class */
-        
-        .traffic-factor {
-            display: inline-block;
-            margin-right: 5px;
-            color: orange;
-        }
-        
-        /* Separador horizontal en la leyenda */
-        .legend-container hr {
-            border: none;
-            border-top: 1px solid #ccc;
-            margin: 5px 0;
-        }
-        
-        /* Custom popup styles */
-        .leaflet-popup-content {
-            font-size: 12px;
-            line-height: 1.4;
-        }
-        
-        .leaflet-popup-content b {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
-            color: #333;
-        }
-    </style>
+    <!-- Leaflet Heat plugin -->
+    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
 </head>
-<body>
+<body class="no-tap-delay">
     <!-- Map container -->
     <div id="map"></div>
     
@@ -241,7 +33,8 @@
     </div>
     
     <!-- Legend -->
-    <div class="legend-container">
+    <div class="legend-container collapsed">
+        <button class="legend-toggle"><i class="fa fa-chevron-down"></i></button>
         <h4>Leyenda de Tiempos de Viaje</h4>
         <div class="legend-item">
             <span class="legend-color green"></span> 0-5 minutos
@@ -262,7 +55,8 @@
     </div>
     
     <!-- Time period selector -->
-    <div class="time-selector">
+    <div class="time-selector collapsed">
+        <button class="time-toggle"><i class="fa fa-chevron-down"></i></button>
         <h4>Período del Día:</h4>
         <div>
             <input type="radio" id="overall" name="timeOfDay" value="overall" checked>
@@ -284,7 +78,8 @@
     </div>
     
     <!-- Info Box -->
-    <div class="info-box">
+    <div class="info-box collapsed">
+        <button class="info-toggle"><i class="fa fa-chevron-down"></i></button>
         <h4>Acerca de este Mapa</h4>
         <p>Este mapa muestra los tiempos de viaje desde áreas residenciales hacia el área de interés.</p>
         <ul>
@@ -296,20 +91,13 @@
         <p>Haga clic en cualquier punto para ver más detalles como accesibilidad.</p>
     </div>
     
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
-    <!-- Leaflet Plugins JS -->
-    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
-    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-    
     <!-- Debug Info Container -->
-    <div id="debug-info" style="position: fixed; top: 50%; right: 10px; background-color: rgba(255,255,255,0.8); padding: 10px; border-radius: 5px; z-index: 1000; max-width: 300px; max-height: 400px; overflow-y: auto; display: none;">
+    <div id="debug-info">
         <h4>Debug Info</h4>
         <div id="debug-content"></div>
     </div>
     
-    <!-- Leaflet JS - MAKE SURE LOADED BEFORE OUR SCRIPTS -->
+    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <!-- Leaflet Plugins JS -->
@@ -443,10 +231,50 @@ Colegio Discovery,14.5537982,-90.4601406,2.70,9.21,6.47,8.46,8.05,1.00,3.8`;
                 debugInfo.style.display = 'block';
             }
         }
+        
+        // Toggle collapsible panels
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up toggle for legend
+            const legendToggle = document.querySelector('.legend-toggle');
+            const legendContainer = document.querySelector('.legend-container');
+            
+            if (legendToggle && legendContainer) {
+                legendToggle.addEventListener('click', function() {
+                    legendContainer.classList.toggle('collapsed');
+                    legendToggle.innerHTML = legendContainer.classList.contains('collapsed') ? 
+                        '<i class="fa fa-chevron-down"></i>' : '<i class="fa fa-chevron-up"></i>';
+                });
+            }
+            
+            // Set up toggle for time selector
+            const timeToggle = document.querySelector('.time-toggle');
+            const timeSelector = document.querySelector('.time-selector');
+            
+            if (timeToggle && timeSelector) {
+                timeToggle.addEventListener('click', function() {
+                    timeSelector.classList.toggle('collapsed');
+                    timeToggle.innerHTML = timeSelector.classList.contains('collapsed') ? 
+                        '<i class="fa fa-chevron-down"></i>' : '<i class="fa fa-chevron-up"></i>';
+                });
+            }
+            
+            // Set up toggle for info box
+            const infoToggle = document.querySelector('.info-toggle');
+            const infoBox = document.querySelector('.info-box');
+            
+            if (infoToggle && infoBox) {
+                infoToggle.addEventListener('click', function() {
+                    infoBox.classList.toggle('collapsed');
+                    infoToggle.innerHTML = infoBox.classList.contains('collapsed') ? 
+                        '<i class="fa fa-chevron-down"></i>' : '<i class="fa fa-chevron-up"></i>';
+                });
+            }
+        });
     </script>
     
-    <!-- Custom JS - LOAD AFTER EMBEDDED DATA -->
+    <!-- Custom JS -->
     <script src="map.js"></script>
+    <script src="map-mobile.js"></script>
     
     <!-- Ensure the update button works -->
     <script>
