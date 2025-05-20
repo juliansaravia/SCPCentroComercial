@@ -1,0 +1,395 @@
+/* styles.css - Styles for Análisis del Área de Interés */
+
+/* Base styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+#map {
+    width: 100%;
+    height: 100vh;
+}
+
+/* Title container */
+.title-container {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 1000;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    max-width: 90%;
+    width: 100%;
+    max-width: 500px;
+}
+
+.title-container h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.subtitle {
+    font-size: 12px;
+    color: #555;
+    margin-top: 5px;
+}
+
+/* Legend container */
+.legend-container {
+    position: fixed;
+    bottom: 20px;
+    left: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 1000;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    max-width: 250px;
+    transition: all 0.3s ease;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Collapsed state for mobile */
+.legend-container.collapsed {
+    max-height: 40px;
+    overflow: hidden;
+}
+
+.legend-toggle {
+    display: none; /* Hidden by default, shown on mobile */
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #555;
+}
+
+.legend-container h4 {
+    margin: 0 0 5px 0;
+    font-size: 13px;
+    padding-right: 25px; /* Space for toggle button */
+}
+
+.legend-item {
+    font-size: 11px;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+    border: 1px solid black;
+}
+
+.green {
+    background-color: green;
+}
+
+.blue {
+    background-color: blue;
+}
+
+.red {
+    background-color: red;
+}
+
+.purple {
+    background-color: purple;
+}
+
+/* Time selector */
+.time-selector {
+    position: fixed;
+    top: 80px; /* Adjusted to not overlap with title */
+    right: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 1000;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    max-width: 250px;
+}
+
+/* Collapsed state for mobile */
+.time-selector.collapsed {
+    max-height: 45px;
+    overflow: hidden;
+}
+
+.time-toggle {
+    display: none; /* Hidden by default, shown on mobile */
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #555;
+}
+
+.time-selector h4 {
+    margin: 0 0 5px 0;
+    font-size: 13px;
+    padding-right: 25px; /* Space for toggle button */
+}
+
+.time-selector label {
+    font-size: 12px;
+    display: block;
+    margin-bottom: 3px;
+}
+
+.time-selector button {
+    width: 100%;
+    margin-top: 5px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.time-selector button:hover {
+    background-color: #45a049;
+}
+
+/* Info box */
+.info-box {
+    position: fixed;
+    bottom: 20px;
+    right: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 1000;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    max-width: 250px;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Collapsed state for mobile */
+.info-box.collapsed {
+    max-height: 40px;
+    overflow: hidden;
+}
+
+.info-toggle {
+    display: none; /* Hidden by default, shown on mobile */
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #555;
+}
+
+.info-box h4 {
+    margin: 0 0 5px 0;
+    font-size: 13px;
+    padding-right: 25px; /* Space for toggle button */
+}
+
+/* Custom marker styles */
+.marker-green, .marker-blue, .marker-red {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-weight: bold;
+    color: white;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+}
+
+.marker-green {
+    background-color: green;
+}
+
+.marker-blue {
+    background-color: blue;
+}
+
+.marker-red {
+    background-color: red;
+}
+
+/* Additional data styles */
+.accessibility-rating {
+    display: inline-block;
+    margin-right: 5px;
+    color: #3388cc;
+}
+
+.traffic-factor {
+    display: inline-block;
+    margin-right: 5px;
+    color: orange;
+}
+
+/* Legend separator */
+.legend-container hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 5px 0;
+}
+
+/* Custom popup styles */
+.leaflet-popup-content {
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.leaflet-popup-content b {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Debug info container */
+#debug-info {
+    position: fixed; 
+    top: 50%; 
+    right: 10px; 
+    background-color: rgba(255,255,255,0.8); 
+    padding: 10px; 
+    border-radius: 5px; 
+    z-index: 1000; 
+    max-width: 300px; 
+    max-height: 400px; 
+    overflow-y: auto; 
+    display: none;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+    .title-container {
+        top: 5px;
+        max-width: 85%;
+        padding: 8px;
+    }
+    
+    .title-container h3 {
+        font-size: 14px;
+    }
+    
+    .subtitle {
+        font-size: 10px;
+    }
+    
+    .legend-container {
+        bottom: 10px;
+        left: 10px;
+        max-width: 150px;
+        max-height: 40px; /* Start collapsed on mobile */
+    }
+    
+    .legend-toggle {
+        display: block; /* Show on mobile */
+    }
+    
+    .time-selector {
+        top: 60px;
+        right: 10px;
+        max-width: 150px;
+        max-height: 45px; /* Start collapsed on mobile */
+    }
+    
+    .time-toggle {
+        display: block; /* Show on mobile */
+    }
+    
+    .info-box {
+        bottom: 10px;
+        right: 10px;
+        max-width: 150px;
+        max-height: 40px; /* Start collapsed on mobile */
+    }
+    
+    .info-toggle {
+        display: block; /* Show on mobile */
+    }
+    
+    /* Make the layer control smaller on mobile */
+    .leaflet-control-layers {
+        font-size: 11px;
+    }
+    
+    /* Make sure popups are readable on mobile */
+    .leaflet-popup-content {
+        font-size: 11px;
+        max-width: 200px;
+    }
+}
+
+/* Fix for touch devices */
+@media (pointer: coarse) {
+    .time-selector input[type="radio"],
+    .time-selector label {
+        min-height: 24px; /* Larger touch targets */
+    }
+    
+    .time-selector button {
+        min-height: 36px; /* Larger touch target for button */
+    }
+}
+
+/* Fullscreen mode enhancements */
+.fullscreen-active #map {
+    height: 100% !important;
+    width: 100% !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+}
+
+/* Better contrast for layer control when using the dark map */
+.leaflet-control-layers {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Improve visibility of zoom controls */
+.leaflet-control-zoom a {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-weight: bold;
+}
+
+/* Fix for tap issues on iOS */
+.no-tap-delay {
+    touch-action: manipulation;
+}
